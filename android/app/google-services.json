@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "407694320179",
+    "project_id": "haverr-93683",
+    "storage_bucket": "haverr-93683.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407694320179:android:f2deb5e5a37b50229ab946",
+        "android_client_info": {
+          "package_name": "com.example.haverr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407694320179-ekqgt7mprpc6oujq2iodoc3scbduaa3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwvjGSyR6YSnC8kGle1rY3ckSdWo-1rlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407694320179-ekqgt7mprpc6oujq2iodoc3scbduaa3h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
