@@ -5,7 +5,7 @@ import 'package:haverr/providers/user_provider.dart';
 import 'package:haverr/responsive/mobile_screen_layout.dart';
 import 'package:haverr/responsive/responsive_layout.dart';
 import 'package:haverr/responsive/web_screen_layout.dart';
-import 'package:haverr/screens/login_screen.dart';
+import 'package:haverr/screens/auth/main_screen.dart';
 import 'package:haverr/utils/colors.dart';
 import 'package:haverr/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -34,8 +34,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: appName,
         theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: mobileBackgroundColor,
-        ),
+            scaffoldBackgroundColor: mobileBackgroundColor,
+            primaryColor: mainColor),
+        // home: const MainScreen()
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
               );
             }
 
-            return const LoginScreen();
+            return const MainScreen();
           },
         ),
       ),

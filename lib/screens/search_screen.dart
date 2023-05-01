@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:haverr/screens/profile_screen.dart';
 import 'package:haverr/utils/colors.dart';
 import 'package:haverr/utils/global_variable.dart';
+import 'package:haverr/utils/utils.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -63,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
+                          backgroundImage: CachedNetworkImageProvider(
                             (snapshot.data! as dynamic).docs[index]['photoUrl'],
                           ),
                           radius: 16,
@@ -84,16 +86,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const PostLoadingEffect();
                 }
 
                 return StaggeredGridView.countBuilder(
                   crossAxisCount: 3,
                   itemCount: (snapshot.data! as dynamic).docs.length,
-                  itemBuilder: (context, index) => Image.network(
-                    (snapshot.data! as dynamic).docs[index]['postUrl'],
+                  itemBuilder: (context, index) => CachedNetworkImage(
+                    imageUrl: (snapshot.data! as dynamic).docs[index]
+                        ['postUrl'],
                     fit: BoxFit.cover,
                   ),
                   staggeredTileBuilder: (index) => MediaQuery.of(context)

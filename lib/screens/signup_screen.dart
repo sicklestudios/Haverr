@@ -12,10 +12,11 @@ import 'package:haverr/widgets/text_field_input.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  final bool isPhoneNumber;
+  const SignupScreen({required this.isPhoneNumber, Key? key}) : super(key: key);
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
@@ -39,14 +40,20 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _isLoading = true;
     });
+    String res = "";
 
-    // signup user using our authmethodds
-    String res = await AuthMethods().signUpUser(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        username: _usernameController.text,
-        bio: _bioController.text,
-        file: _image!);
+    if (widget.isPhoneNumber) {
+    } else {
+      // signup user using our authmethodds
+      res = await AuthMethods().signUpUser(
+          isPhoneNumber: widget.isPhoneNumber,
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+          username: _usernameController.text,
+          bio: _bioController.text,
+          file: _image!);
+    }
+
     // if string returned is sucess, user has been created
     if (res == "success") {
       setState(() {

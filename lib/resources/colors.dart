@@ -1,0 +1,16 @@
+import 'package:flutter/material.dart';
+
+const mainColor = Color.fromRGBO(112, 103, 253, 1);
+const bottomNavigationBarColor = Color.fromRGBO(26, 14, 77, 1);
+const mainColorFaded = Color.fromRGBO(112, 103, 253, 0.7);
+const mainTextColor = Colors.black;
+const greyColor = Colors.grey;
+const senderChatCardColor = Color.fromARGB(255, 242, 244, 247);
+const whiteColor = Colors.white;
+const scaffoldBackgroundColor = Color.fromARGB(255, 250, 239, 255);
+// final mainMaterialColor =
+//     const Color.fromRGBO(112, 103, 253, 1).toMaterialColor();
+
+List<Color> cardColors = [
+  const Color.fromRGBO(112, 103, 253, 0.7),
+];

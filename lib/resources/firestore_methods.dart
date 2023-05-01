@@ -1,13 +1,38 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:haverr/models/comment.dart';
 import 'package:haverr/models/post.dart';
+import 'package:haverr/providers/user_provider.dart';
 import 'package:haverr/resources/storage_methods.dart';
+import 'package:haverr/utils/global_variable.dart';
+import 'package:provider/provider.dart';
 
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //adding the image url to firestore
+  Future<String> addPhotoToFirestore({
+    required String url,
+  }) async {
+    String res = "Some error occurred";
+    try {
+      //if the fields are not empty than registering the user
+      if (url.isNotEmpty) {
+        _firestore
+            .collection("users")
+            .doc(globalFirebaseAuth.currentUser?.uid)
+            .update({
+          'photoUrl': url,
+        });
+        res = "success";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 
   Future<String> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {
@@ -56,6 +81,59 @@ class FireStoreMethods {
     return res;
   }
 
+  Future<String> likeComment(
+      String postId, String commentId, String uid, List likes) async {
+    String res = "Some error occurred";
+    try {
+      if (likes.contains(uid)) {
+        // if the likes list contains the user uid, we need to remove it
+        _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> savePost(String postId, String uid, List likes) async {
+    String res = "Some error occurred";
+    try {
+      if (likes.contains(postId)) {
+        // if the likes list contains the user uid, we need to remove it
+        await _firestore.collection("users").doc(uid).update({
+          'saved': FieldValue.arrayRemove([postId])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        await _firestore.collection("users").doc(uid).update({
+          'saved': FieldValue.arrayUnion([postId])
+        });
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   // Post comment
   Future<String> postComment(String postId, String text, String uid,
       String name, String profilePic) async {
@@ -69,14 +147,13 @@ class FireStoreMethods {
             .doc(postId)
             .collection('comments')
             .doc(commentId)
-            .set({
-          'profilePic': profilePic,
-          'name': name,
-          'uid': uid,
-          'text': text,
-          'commentId': commentId,
-          'datePublished': DateTime.now(),
-        });
+            .set(CommentModel(
+                    uid: uid,
+                    likes: [],
+                    text: text,
+                    datePublished: DateTime.now(),
+                    commentId: commentId)
+                .toJson());
         res = 'success';
       } else {
         res = "Please enter text";
